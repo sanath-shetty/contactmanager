@@ -10,13 +10,22 @@ const AddContact = () => {
 
   const onFormSubmit = (e) => {
     e.preventDefault();
-    setMessage("");
-    console.log(contact);
-    let contacts = [];
-    contacts = JSON.parse(localStorage.getItem("contacts"));
-    contacts.push(contact);
-    localStorage.setItem("contacts", JSON.stringify(contacts));
-    setMessage("Contact has been added.");
+    try {
+      let allContacts = JSON.parse(localStorage.getItem("contacts"));
+      console.log(`Log from AddContact ${allContacts}`);
+
+      if (!allContacts) {
+        localStorage.setItem("contacts", JSON.stringify([contact]));
+      } else {
+        localStorage.setItem(
+          "contacts",
+          JSON.stringify([...allContacts, contact])
+        );
+      }
+    } catch (err) {
+      console.log(err);
+      setMessage("Failed to add contact.");
+    }
   };
 
   return (

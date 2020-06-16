@@ -3,12 +3,26 @@ import React, { useState, useEffect } from "react";
 const ContactList = () => {
   const [contacts, setContacts] = useState([]);
 
+  const [message, setMessage] = useState("");
+
   useEffect(() => {
-    setContacts(JSON.parse(localStorage.getItem("contacts")));
+    loadContacts();
   }, []);
 
-  const refresh = () => {
-    setContacts(JSON.parse(localStorage.getItem("contacts")));
+  // load contacts to the state.
+  const loadContacts = () => {
+    let allContacts = JSON.parse(localStorage.getItem("contacts"));
+    console.log(allContacts);
+    if (!allContacts) {
+      setMessage("Contact list empty.");
+    } else {
+      setContacts(allContacts);
+    }
+  };
+
+  const eraseAll = () => {
+    localStorage.clear();
+    loadContacts();
   };
 
   const editContact = (contact) => {};
@@ -17,11 +31,16 @@ const ContactList = () => {
   return (
     <div>
       <h3>Displaying all contacts</h3>
-      <button className="btn btn-primary" onClick={() => refresh()}>
+      <button className="btn btn-primary" onClick={() => loadContacts()}>
         Refresh
       </button>
+      <button className="btn btn-secondary" onClick={() => eraseAll()}>
+        Erase Contacts
+      </button>
+      <p>{message}</p>
+
       {contacts.map((contact) => (
-        <div className="card my-2">
+        <div className="card my-2" key={contact.name}>
           <div className="card-body">
             <h4>{contact.name}</h4>
             <p>{contact.phonenumber}</p>
