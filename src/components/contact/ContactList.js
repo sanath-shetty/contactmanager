@@ -1,20 +1,45 @@
 import React, { useState, useEffect } from "react";
 
 const ContactList = () => {
-  const [contact, setContact] = useState({});
+  const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
-    setContact(JSON.parse(localStorage.getItem("contact")));
+    setContacts(JSON.parse(localStorage.getItem("contacts")));
   }, []);
+
+  const refresh = () => {
+    setContacts(JSON.parse(localStorage.getItem("contacts")));
+  };
+
+  const editContact = (contact) => {};
+
+  const deleteContact = (contact) => {};
   return (
     <div>
       <h3>Displaying all contacts</h3>
-      <div className="card">
-        <div className="card-body">
-          <h4>MAnja</h4>
-          <p>1234567890</p>
+      <button className="btn btn-primary" onClick={() => refresh()}>
+        Refresh
+      </button>
+      {contacts.map((contact) => (
+        <div className="card my-2">
+          <div className="card-body">
+            <h4>{contact.name}</h4>
+            <p>{contact.phonenumber}</p>
+            <button
+              className="btn btn-dark"
+              onClick={(contact) => editContact(contact)}
+            >
+              Edit
+            </button>
+            <button
+              className="btn btn-danger"
+              onClick={(contact) => deleteContact(contact)}
+            >
+              Delete
+            </button>
+          </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 };

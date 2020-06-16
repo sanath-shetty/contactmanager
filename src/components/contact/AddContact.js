@@ -3,28 +3,26 @@ import React, { useState } from "react";
 const AddContact = () => {
   const [contact, setContact] = useState({});
 
+  const [message, setMessage] = useState("");
+
   const onInputChange = (e) =>
     setContact({ ...contact, [e.target.name]: e.target.value });
 
   const onFormSubmit = (e) => {
     e.preventDefault();
+    setMessage("");
     console.log(contact);
     let contacts = [];
-    contacts = localStorage.getItem("contacts");
-    if (contacts != null) {
-      if (contacts.length > 0) {
-        contacts.push(contact);
-        localStorage.setItem("contacts", JSON.stringify(contacts));
-      }
-    } else {
-      contacts.push(contact);
-      localStorage.setItem("contacts", JSON.stringify(contacts));
-    }
+    contacts = JSON.parse(localStorage.getItem("contacts"));
+    contacts.push(contact);
+    localStorage.setItem("contacts", JSON.stringify(contacts));
+    setMessage("Contact has been added.");
   };
 
   return (
     <div>
       <h3>Add Contact</h3>
+      <h4>{message}</h4>
       <form onSubmit={(e) => onFormSubmit(e)}>
         <div className="form-group">
           <label>Name</label>
